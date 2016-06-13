@@ -17,7 +17,6 @@ else
   REMOTE_BRANCH=${REMOTE_BRANCH:?'You need to configure the REMOTE_BRANCH environment variable if you're not pushing a branch!'}
 fi
 
-
 set -e
 
 git fetch --unshallow || true
