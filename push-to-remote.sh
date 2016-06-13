@@ -14,7 +14,7 @@ REMOTE_REPOSITORY=${REMOTE_REPOSITORY:?'You need to configure the REMOTE_REPOSIT
 if [ -n $CIRCLE_BRANCH ]; then
   REMOTE_BRANCH=$CIRCLE_BRANCH
 else
-  REMOTE_BRANCH=${REMOTE_BRANCH:?'You need to configure the REMOTE_BRANCH environment variable if you're not pushing a branch!'}
+  REMOTE_BRANCH=${REMOTE_BRANCH:?'You need to configure the REMOTE_BRANCH environment variable if you are not pushing a branch!'}
 fi
 
 set -e
