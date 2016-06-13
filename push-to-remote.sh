@@ -8,7 +8,7 @@
 # * REMOTE_BRANCH, e.g. "production"
 #
 # Include in your builds via
-# \curl -sSL https://raw.githubusercontent.com/TopFloorTech/deployment-scripts/master/git-push-to-remote.sh | bash -s
+# \curl -sSL https://raw.githubusercontent.com/TopFloorTech/deployment-scripts/master/push-to-remote.sh | bash -s
 REMOTE_REPOSITORY=${REMOTE_REPOSITORY:?'You need to configure the REMOTE_REPOSITORY environment variable!'}
 
 if [ -n $CIRCLE_BRANCH ]; then
