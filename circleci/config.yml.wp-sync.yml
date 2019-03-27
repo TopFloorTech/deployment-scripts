@@ -18,6 +18,9 @@ defaults: &defaults
     # TEST_SITE_NAME: The name of the test site to provide when installing.
     # ADMIN_PASSWORD: The admin password to use when installing.
     # ADMIN_EMAIL:    The email address to give the admin when installing.
+    #
+    # REMOTE REPOSITORY: Optionally override the automatically-determined pantheon repo
+    # REMOTE_BRANCH: Optionally override the automatically determined branch to push to
     #=========================================================================
     TZ: "/usr/share/zoneinfo/America/Chicago"
 
