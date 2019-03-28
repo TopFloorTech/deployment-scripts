@@ -8,7 +8,7 @@ set -eo pipefail
 #
 # If using the sync method instead of the build method, this step isn't needed.
 #
-if [[ $CIRCLE_BRANCH != "master" ]] ; then
+if [[ $CIRCLE_BRANCH != "master" || $WORKFLOW_ID != "build" ]] ; then
   exit 0
 fi
 

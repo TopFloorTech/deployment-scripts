@@ -19,6 +19,11 @@ defaults: &defaults
     # ADMIN_PASSWORD: The admin password to use when installing.
     # ADMIN_EMAIL:    The email address to give the admin when installing.
     #
+    # WORKFLOW_ID: "build" or "sync"
+    # BUILD_TYPE: "clone" or "install"
+    # BUILD_SOURCE_ENV: "dev"
+    # SITE_PLATFORM: "drupal7", "drupal", "wordpress"
+    #
     # REMOTE REPOSITORY: Optionally override the automatically-determined pantheon repo
     # REMOTE_BRANCH: Optionally override the automatically determined branch to push to
     #=========================================================================
@@ -34,7 +39,6 @@ defaults: &defaults
     # See: https://discuss.circleci.com/t/circle-2-0-global-environment-variables/8681
     #======================================================================================================================================
 
-    NOTIFY: 'scripts/github/add-commit-comment {project} {sha} "Synced to Pantheon environment [{site}#{env}]({dashboard-url})." {site-url}'
     ADMIN_USERNAME: admin
     # BUILD_TOOLS_VERSION: ^2.0.0-alpha4
     TERM: dumb
@@ -54,7 +58,11 @@ jobs:
 
     - run:
         name: environment
-        command: ./.circleci/scripts/pantheon/00-set-environment--sync.sh
+        command: ./.circleci/scripts/pantheon/00-set-environment.sh
+
+    - run:
+        name: initialize composer.json if needed
+        command: ./.circleci/scripts/pantheon/02-initialize-composer.sh
 
     - run:
         name: run composer install to get the vendor directory
@@ -94,35 +102,47 @@ jobs:
 
     - run:
         name: dependencies
-        command: ./.circleci/scripts/pantheon/00-set-environment--sync.sh
+        command: ./.circleci/scripts/pantheon/00-set-environment.sh
+
+    - run:
+        name: initialize composer.json if needed
+        command: ./.circleci/scripts/pantheon/02-initialize-composer.sh
 
     - run:
         name: install dev dependencies, build assets, etc.
         command: ./.circleci/scripts/pantheon/05-prepare.sh
 
     - run:
+        name: build assets
+        command: composer -n build-assets
+
+    - run:
         name: prepare database for site-under test
-        command: ./.circleci/scripts/pantheon/10-init-site-under-test--sync.sh
+        command: ./.circleci/scripts/pantheon/10-init-site-under-test.sh
 
     - run:
         name: run post-init commands on the pantheon environment
-        command: ./.circleci/scripts/pantheon/12-post-init--d7.sh
+        command: ./.circleci/scripts/pantheon/15-post-init.sh
 
     - run:
         name: run composer install again to get dev dependencies
         command: composer install
 
-    #- run:
-    #    name: run functional tests with Behat
-    #    command: ./tests/scripts/run-behat
+    - run:
+        name: run functional tests with Behat
+        command: composer -n behat
 
     - run:
         name: post-test actions
-        command: ./.circleci/scripts/pantheon/15-post-test.sh
+        command: ./.circleci/scripts/pantheon/20-post-test.sh
+
+    - run:
+        name: handle merge to master (if needed)
+        command: ./.circleci/scripts/pantheon/25-merge-master.sh
 
     - run:
         name: remove transient test fixtures
-        command: ./.circleci/scripts/pantheon/25-cleanup-fixtures.sh
+        command: ./.circleci/scripts/pantheon/30-cleanup-fixtures.sh
 
 workflows:
   version: 2
