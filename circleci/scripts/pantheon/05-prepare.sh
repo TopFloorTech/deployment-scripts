@@ -29,10 +29,14 @@ if [[ $WORKFLOW_ID == 'sync' ]]; then
       fi
     fi
     REMOTE_BRANCH=${REMOTE_BRANCH:?'You need to configure the REMOTE_BRANCH environment variable if you are not pushing a branch!'}
+
+    terminus env:info $TERMINUS_SITE:$TERMINUS_ENV && true
+    PANTHEON_ENV_EXISTS=$?
 else
     DEFAULT_ENV=ci-$CIRCLE_BUILD_NUM
     REMOTE_REPOSITORY=""
     REMOTE_BRANCH=""
+    PANTHEON_ENV_EXISTS=0
 
     # Delete leftover CI environments
     terminus -n build:env:delete:ci "$TERMINUS_SITE" --keep=2 --yes
@@ -51,5 +55,6 @@ fi
   echo "export DEFAULT_ENV='$DEFAULT_ENV'"
   echo "export REMOTE_REPOSITORY='$REMOTE_REPOSITORY'"
   echo "export REMOTE_BRANCH='$REMOTE_BRANCH'"
+  echo "export PANTHEON_ENV_EXISTS='$PANTHEON_ENV_EXISTS'"
 ) >> $BASH_ENV
 source $BASH_ENV

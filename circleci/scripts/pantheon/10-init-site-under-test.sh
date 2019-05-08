@@ -24,6 +24,6 @@ elif [[ $WORKFLOW_ID == "sync" ]]; then
     # @todo Check if it exists before trying to wake it up.
     #terminus -n env:wake "$TERMINUS_SITE.$TERMINUS_ENV"
 
-    git fetch --unshallow || true
-    git push ${REMOTE_REPOSITORY} ${CIRCLE_SHA1}:${REMOTE_BRANCH}
+    git fetch || true
+    git push ${REMOTE_REPOSITORY} ${CIRCLE_SHA1}:refs/heads/${REMOTE_BRANCH}
 fi
