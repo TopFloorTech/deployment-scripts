@@ -20,9 +20,9 @@ if [[ $WORKFLOW_ID == "build" ]]; then
         terminus -n build:env:install "$TERMINUS_SITE.$TERMINUS_ENV" --site-name="$TEST_SITE_NAME" --account-mail="$ADMIN_EMAIL" --account-pass="$ADMIN_PASSWORD"
     fi
 elif [[ $WORKFLOW_ID == "sync" ]]; then
-    # Wake up the multidev if it exists
-    # @todo Check if it exists before trying to wake it up.
-    #terminus -n env:wake "$TERMINUS_SITE.$TERMINUS_ENV"
+    if [[ $PANTHEON_ENV_EXISTS == 0 ]]; then
+      terminus -n env:wake "$TERMINUS_SITE.$TERMINUS_ENV"
+    fi
 
     git fetch || true
     git push ${REMOTE_REPOSITORY} ${CIRCLE_SHA1}:refs/heads/${REMOTE_BRANCH}
