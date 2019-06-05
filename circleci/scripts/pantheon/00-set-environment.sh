@@ -55,11 +55,10 @@ NOTIFY='scripts/github/add-commit-comment {project} {sha} "'"$MESSAGE"'" {site-u
 (
   echo "export WORKFLOW_ID='$WORKFLOW_ID'"
   echo "export BUILD_TYPE='$BUILD_TYPE'"
-  echo "export BUILD_SOURCE_ID='$BUILD_SOURCE_ID'"
+  echo "export BUILD_SOURCE_ENV='$BUILD_SOURCE_ENV'"
   echo "export SITE_PLATFORM='$SITE_PLATFORM'"
   echo 'export PATH=$PATH:$HOME/bin'
   echo 'export TERMINUS_HIDE_UPDATE_MESSAGE=1'
-  echo 'export TERMINUS_ENV=${TERMINUS_ENV:-$DEFAULT_ENV}'
   echo "export NOTIFY='$NOTIFY'"
 ) >> $BASH_ENV
 source $BASH_ENV
