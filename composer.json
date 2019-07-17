@@ -1,0 +1,16 @@
+{
+    "name": "topfloor/deployment-scripts",
+    "description": "Deployment scripts to support Top Floor's workflow",
+    "type": "library",
+    "require": {
+        "oomphinc/composer-installers-extender": "^1.1",
+        "pantheon-systems/quicksilver-pushback": "^1.0",
+        "rvtraveller/qs-composer-installer": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "Ben McClure",
+            "email": "ben.mcclure@gmail.com"
+        }
+    ]
+}
